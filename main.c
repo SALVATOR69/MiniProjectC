@@ -40,6 +40,7 @@ void ajouterProduitDebut(stock* s,produit p);
 void ajouterProduitFin(stock* s,produit p);
 void supprimerDebut(stock* s);
 void supprimerFin(stock* s);
+void modifierProduit(stock* s,char code[]);
 
 // L functions
 // 
@@ -73,7 +74,7 @@ float valeurProduit(produit p){
 // PT 2
 
 maillon* creerMaillon(produit p){
-    maillon* m = malloc(sizeof(maillon));
+    maillon* m = (maillon*)malloc(sizeof(maillon));
     m->p = p;
     m->suivant = NULL; 
     return m;
@@ -158,5 +159,30 @@ void supprimerFin(stock* s){
 
     free(ptr->suivant);
     ptr->suivant = NULL;
+
+}
+
+void modifierProduit(stock* s,char code[]){
+    produit* p = rechercheProduit(*s,code);
+    if(p == NULL) {printf("Code Introuvable"); return; }
+
+    char nom[50];
+    int qte;
+    float prix;
+
+
+    printf("Donner Nouveau Nom\n:");
+    fgets(nom,sizeof(nom),stdin);
+    nom[strlen(nom)-1]= '\0';
+
+    printf("Donner Nouvelle Quantite\n:");
+    scanf("%d",&qte);getchar();
+
+    printf("Donner Nouveau Prix\n:");
+    scanf("%f",&prix);getchar();
+
+    strcpy(p->nom,nom);
+    p->prix = prix;
+    p->qte = qte;
 
 }
