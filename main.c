@@ -261,3 +261,68 @@ void chargerStock(stock *s, char nomFichier[]){
     fclose(fp);
 }
 
+void afficherMenu(){
+    printf("\n===== GESTION DE STOCK =====\n");
+    printf("1. Ajouter produit (debut)\n");
+    printf("2. Ajouter produit (fin)\n");
+    printf("3. Supprimer premier produit\n");
+    printf("4. Supprimer dernier produit\n");
+    printf("5. Supprimer produit par code\n");
+    printf("6. Modifier produit\n");
+    printf("7. Rechercher produit\n");
+    printf("8. Afficher stock\n");
+    printf("9. Afficher ruptures de stock\n");
+    printf("10. Valeur totale du stock\n");
+    printf("11. Produit le plus cher\n");
+    printf("12. Sauvegarder stock\n");
+    printf("13. Charger stock\n");
+    printf("0. Quitter\n");
+    printf("Votre choix: ");
+}
+
+int main(){
+    stock s;
+    initStock(&s);
+    int choix;
+    char code[10];
+    char fichier[] = "stock.bin";
+
+    do {
+        afficherMenu();
+        scanf("%d",&choix); getchar();
+
+        switch(choix){
+            case 1: ajouterProduitDebut(&s, lireProduit()); break;
+            case 2: ajouterProduitFin(&s, lireProduit()); break;
+            case 3: supprimerDebut(&s); break;
+            case 4: supprimerFin(&s); break;
+            case 5:
+                printf("Code: "); scanf("%s",code);
+                supprimerProduit(&s,code); break;
+            case 6:
+                printf("Code: "); scanf("%s",code);
+                modifierProduit(&s,code); break;
+            case 7:{
+                printf("Code: "); scanf("%s",code);
+                produit* p = rechercheProduit(s,code);
+                if(p) afficheProduit(*p);
+                else printf("Introuvable\n");
+                break;
+            }
+            case 8: afficherStock(s); break;
+            case 9: afficherRuptureStock(s); break;
+            case 10: printf("Total: %.2f\n", totalStock(s)); break;
+            case 11:{
+                produit* p = produitLePlusCher(s);
+                if(p) afficheProduit(*p);
+                break;
+            }
+            case 12: sauvegarderStock(s, fichier); break;
+            case 13: chargerStock(&s, fichier); break;
+            case 0: printf("Au revoir!\n"); break;
+            default: printf("Choix invalide!\n");
+        }
+    } while(choix != 0);
+
+    return 0;
+}
