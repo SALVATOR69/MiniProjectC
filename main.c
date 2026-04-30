@@ -267,15 +267,14 @@ void afficherMenu(){
     printf("2. Ajouter produit (fin)\n");
     printf("3. Supprimer premier produit\n");
     printf("4. Supprimer dernier produit\n");
-    printf("5. Supprimer produit par code\n");
-    printf("6. Modifier produit\n");
-    printf("7. Rechercher produit\n");
-    printf("8. Afficher stock\n");
-    printf("9. Afficher ruptures de stock\n");
-    printf("10. Valeur totale du stock\n");
-    printf("11. Produit le plus cher\n");
-    printf("12. Sauvegarder stock\n");
-    printf("13. Charger stock\n");
+    printf("5. Modifier produit\n");
+    printf("6. Rechercher produit\n");
+    printf("7. Afficher stock\n");
+    printf("8. Afficher ruptures de stock\n");
+    printf("9. Valeur totale du stock\n");
+    printf("10. Produit le plus cher\n");
+    printf("11. Sauvegarder stock\n");
+    printf("12. Charger stock\n");
     printf("0. Quitter\n");
     printf("Votre choix: ");
 }
@@ -297,28 +296,25 @@ int main(){
             case 3: supprimerDebut(&s); break;
             case 4: supprimerFin(&s); break;
             case 5:
-                printf("Code: "); scanf("%s",code);
-                supprimerProduit(&s,code); break;
-            case 6:
-                printf("Code: "); scanf("%s",code);
+                printf("Code: "); scanf("%s",code); getchar();
                 modifierProduit(&s,code); break;
-            case 7:{
-                printf("Code: "); scanf("%s",code);
+            case 6:{
+                printf("Code: "); scanf("%s",code); getchar();
                 produit* p = rechercheProduit(s,code);
                 if(p) afficheProduit(*p);
                 else printf("Introuvable\n");
                 break;
             }
-            case 8: afficherStock(s); break;
-            case 9: afficherRuptureStock(s); break;
-            case 10: printf("Total: %.2f\n", totalStock(s)); break;
-            case 11:{
+            case 7: afficherStock(s); break;
+            case 8: afficherRuptureStock(s); break;
+            case 9: printf("Total: %.2f\n", totalStock(s)); break;
+            case 10:{
                 produit* p = produitLePlusCher(s);
                 if(p) afficheProduit(*p);
                 break;
             }
-            case 12: sauvegarderStock(s, fichier); break;
-            case 13: chargerStock(&s, fichier); break;
+            case 11: sauvegarderStock(s, fichier); break;
+            case 12: chargerStock(&s, fichier); break;
             case 0: printf("Au revoir!\n"); break;
             default: printf("Choix invalide!\n");
         }
