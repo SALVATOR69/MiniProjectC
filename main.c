@@ -58,16 +58,16 @@ void chargerStock(stock *s, char nomFichier[]);
 produit lireProduit(){
     produit p;
 
-    printf("Entere le code d'un produit");
+    printf("Entere le code d'un produit\n:");
     scanf("%s",p.code);getchar();
 
-    printf("Entere le nom du produit");
+    printf("Entere le nom du produit\n:");
     fgets(p.nom,sizeof(p.nom),stdin);p.nom[strlen(p.nom) - 1]='\0';
     
-    printf("Entere la quantite du produit");
+    printf("Entere la quantite du produit\n:");
     scanf("%d",&p.qte);getchar();
 
-    printf("Entere le prix du produit");
+    printf("Entere le prix du produit\n:");
     scanf("%f",&p.prix);getchar();   
 
     return p;
