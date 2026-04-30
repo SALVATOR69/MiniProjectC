@@ -29,9 +29,11 @@ struct stock{
 // ProtoType dl Functions
 // 
 // 
+
 produit lireProduit();
 void afficheProduit(produit p);
 float valeurProduit(produit p);
+
 maillon* creerMaillon(produit p);
 void intStock(stock *s);
 bool codeExiste(stock s,char code[]);
@@ -41,6 +43,12 @@ void ajouterProduitFin(stock* s,produit p);
 void supprimerDebut(stock* s);
 void supprimerFin(stock* s);
 void modifierProduit(stock* s,char code[]);
+void afficherStock(stock s);
+void afficherRuptureStock(stock s);
+float totalStock(stock s);
+produit* produitLePlusCher(stock s);
+void sauvegarderStock(stock s, char nomFichier[]);
+void chargerStock(stock *s, char nomFichier[]);
 
 // L functions
 // 
@@ -154,7 +162,7 @@ void supprimerFin(stock* s){
     if(s->tete == NULL) { printf("Votre panier est deja vide!"); return; }
     
     maillon* ptr = s->tete;
-    while (ptr->suivant !=NULL)
+    while (ptr->suivant->suivant !=NULL)
         ptr = ptr->suivant;
 
     free(ptr->suivant);
@@ -186,3 +194,70 @@ void modifierProduit(stock* s,char code[]){
     p->qte = qte;
 
 }
+
+void afficherStock(stock s){
+    maillon* ptr = s.tete;
+    while (ptr!=NULL)
+    {
+        afficheProduit(ptr->p);
+        ptr = ptr->suivant;
+    }
+    
+}
+
+void afficherRuptureStock(stock s){
+    maillon* ptr = s.tete;
+    while (ptr!=NULL)
+    {
+        if(ptr->p.qte == 0) afficheProduit(ptr->p);
+        ptr = ptr->suivant;
+    }
+    
+}
+
+float totalStock(stock s){
+    maillon* ptr = s.tete;
+    float sum = 0;
+    while (ptr!=NULL)
+    {
+        sum += valeurProduit(ptr->p);
+        ptr = ptr->suivant;
+    }
+    return sum;
+
+}
+
+produit* produitLePlusCher(stock s){
+    maillon* ptr = s.tete;
+    produit* PrdMax = NULL;
+    while (ptr != NULL)
+    {
+        if (PrdMax == NULL || ptr->p.prix > PrdMax->prix) 
+            PrdMax = &ptr->p;
+        ptr = ptr->suivant;
+    }
+    return PrdMax;
+    
+}
+
+void sauvegarderStock(stock s, char nomFichier[]){
+    FILE* fp = fopen(nomFichier,"wb");
+    maillon* ptr = s.tete;
+
+    while( ptr != NULL){
+        fwrite(&ptr->p, sizeof(produit), 1, fp);
+        ptr = ptr->suivant;
+    }   
+    fclose(fp);
+}
+
+void chargerStock(stock *s, char nomFichier[]){
+    FILE* fp = fopen(nomFichier,"rb");
+    produit p;
+    
+    while(fread(&p, sizeof(produit), 1, fp) == 1){
+        ajouterProduitFin(s, p);
+    }   
+    fclose(fp);
+}
+
